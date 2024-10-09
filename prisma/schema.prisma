@@ -15,37 +15,72 @@ datasource db {
 
 model User {
   id         Int      @id @default(autoincrement())
-  username   String   @unique // @username, unique
+  username   String
   email      String?  @unique
   phone      String?
   avatar     String?
   password   String   @ignore
   lastOnline DateTime
 
-  createdChats Chat[] @relation(name: "Created")
-  chats        Chat[] @relation()
-
-  messages Message[]
+  channels      Channel[]
+  subscriptions Subscriptions[]
 }
 
-model Chat {
-  id Int @id @default(autoincrement())
+model Subscriptions {
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
 
-  creator   User @relation(references: [id], fields: [creatorId], name: "Created")
-  creatorId Int
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId Int
 
-  members  User[]
-  messages Message[]
+  @@id([userId, channelId])
 }
 
-model Message {
-  id   Int    @id @default(autoincrement())
-  text String
+model Channel {
+  id            Int             @id @default(autoincrement())
+  name          String
+  creator       User            @relation(fields: [creatorId], references: [id])
+  creatorId     Int
+  subscriptions Subscriptions[]
+  posts         Post[]
+  tiers         Tier[]
 
-  sender   User @relation(references: [id], fields: [senderId])
-  senderId Int
+  avatar String?
+}
 
-  chat      Chat     @relation(references: [id], fields: [chatId])
-  chatId    Int
-  createdAt DateTime @default(now())
+model Post {
+  id        Int     @id @default(autoincrement())
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId Int
+  likes     Int     @default(0)
+  views     Int     @default(0)
+  text      String?
+  media     Media[]
+
+  tier   Tier @relation(fields: [tierId], references: [id])
+  tierId Int
+}
+
+model Media {
+  id     Int       @id @default(autoincrement())
+  type   MediaType @default(Audio)
+  post   Post      @relation(fields: [postId], references: [id])
+  postId Int
+}
+
+model Tier {
+  id    Int    @id @default(autoincrement())
+  name  String
+  price Int
+
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId Int
+
+  posts Post[]
+}
+
+enum MediaType {
+  Photo
+  Video
+  Audio
 }

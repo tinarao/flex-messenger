@@ -11,32 +11,17 @@ export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const send = () => {
-    startTransition(async () => {
-      await sendMessage();
-    });
-  };
-
   useEffect(() => {
     if (!session) {
       router.replace('/auth');
+    } else {
+      router.push('/app');
     }
   }, [session]);
 
-  // useEffect(() => {
-  //   const channel = pusherClient.subscribe('messages');
-  //   channel.bind('message', (data) => {
-  //     console.log(data);
-  //   });
-
-  //   return () => {
-  //     channel.unbind('message');
-  //   };
-  // }, []);
-
   return (
     <div className="h-screen flex items-center justify-center">
-      <Button onClick={send}>Button component</Button>
+      <Button>Button component</Button>
     </div>
   );
 }

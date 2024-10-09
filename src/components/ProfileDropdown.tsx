@@ -36,7 +36,14 @@ const ProfileDropdown = () => {
         <DropdownMenuLabel>{session.user.username}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="/app/logout">Выйти</Link>
+          <Link className="cursor-pointer" href="/app/me">
+            Мой профиль
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link className="cursor-pointer" href="/app/logout">
+            Выйти
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

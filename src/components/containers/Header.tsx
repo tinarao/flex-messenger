@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import ProfileDropdown from '../ProfileDropdown';
-import AddContactDialog from '../modals/AddContactDialog';
 import { Button } from '../ui/button';
 
 const Header = () => {
@@ -11,9 +10,9 @@ const Header = () => {
           Flex
         </Link>
         <div className="flex items-center gap-x-2">
-          <AddContactDialog>
-            <Button size="lg">Добавить контакт</Button>
-          </AddContactDialog>
+          <Button asChild size="lg">
+            <Link href="/app/me?block=channels">Мои каналы</Link>
+          </Button>
           <ProfileDropdown />
         </div>
       </div>
