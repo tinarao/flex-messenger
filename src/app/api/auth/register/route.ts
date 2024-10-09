@@ -2,14 +2,11 @@ import { z } from "zod"
 import { NextResponse } from "next/server";
 import prisma from "@/lib/client";
 import bcrypt from 'bcryptjs';
+import { passwordValidator, usernameValidator } from "@/validators/user";
 
 const registerDto = z.object({
-    username: z.string({ "message": "Имя пользователя пустое" })
-        .min(2, "Имя пользователя слишком короткое")
-        .max(16, "Слишком длинное имя пользователя!"),
-    password: z.string({ "message": "Пароль пуст" })
-        .min(8, "Слишком короткий пароль")
-        .max(64, "Слишком длинный пароль")
+    username: usernameValidator,
+    password: passwordValidator
 })
 
 export async function POST(request: Request) {

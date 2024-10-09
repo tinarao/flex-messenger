@@ -22,20 +22,30 @@ model User {
   password   String   @ignore
   lastOnline DateTime
 
-  contacts          User[] @relation("contacts") // Self-relations
-  symmetricContacts User[] @relation("contacts")
+  createdChats Chat[] @relation(name: "Created")
+  chats        Chat[] @relation()
 
-  sentMessages     Message[] @relation(name: "sent")
-  recievedMessages Message[] @relation(name: "recieved")
+  messages Message[]
+}
+
+model Chat {
+  id Int @id @default(autoincrement())
+
+  creator   User @relation(references: [id], fields: [creatorId], name: "Created")
+  creatorId Int
+
+  members  User[]
+  messages Message[]
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
-  text      String
-  from      User     @relation(name: "sent", fields: [fromId], references: [id])
-  fromId    Int
-  to        User     @relation(name: "recieved", fields: [toId], references: [id])
-  toId      Int
-  hasSeen   Boolean  @default(false)
+  id   Int    @id @default(autoincrement())
+  text String
+
+  sender   User @relation(references: [id], fields: [senderId])
+  senderId Int
+
+  chat      Chat     @relation(references: [id], fields: [chatId])
+  chatId    Int
   createdAt DateTime @default(now())
 }

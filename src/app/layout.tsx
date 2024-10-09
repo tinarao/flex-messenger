@@ -1,14 +1,18 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Nunito } from 'next/font/google';
 import './globals.css';
 import { Toaster } from 'sonner';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/utils/auth';
+import QueryClientProvider from '@/components/providers/query';
 
 import SessionProvider from '@/components/providers/session';
-import { redirect } from 'next/navigation';
 
 const inter = Inter({ subsets: ['latin'] });
+const nunito = Nunito({
+  subsets: ['cyrillic', 'latin'],
+  weight: ['200', '300', '400', '500', '600', '700', '800', '900', '1000'],
+});
 
 export const metadata: Metadata = {
   title: 'Flex',
@@ -24,11 +28,13 @@ export default async function RootLayout({
 
   return (
     <html lang="ru">
-      <body className={`${inter.className} antialiased`}>
-        <SessionProvider session={session}>
-          <Toaster richColors />
-          {children}
-        </SessionProvider>
+      <body className={`${nunito.className} antialiased`}>
+        <QueryClientProvider>
+          <SessionProvider session={session}>
+            <Toaster richColors />
+            {children}
+          </SessionProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );

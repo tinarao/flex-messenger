@@ -20,17 +20,18 @@ const Page = () => {
     },
     onSubmit: async ({ value }) => {
       setIsLoading(true);
-      if (value.password === '' || value.username === '') {
-        toast.error('Вы точно ввели все данные?');
-        return;
-      }
 
       try {
+        if (value.password === '' || value.username === '') {
+          toast.error('Вы точно ввели все данные?');
+          return;
+        }
+
         const res = await signIn('credentials', {
           username: value.username,
           password: value.password,
-          redirect: false,
-          callbackUrl: '/',
+          redirect: true,
+          callbackUrl: '/app',
         });
         if (!res?.ok) {
           toast.error(res?.error);
