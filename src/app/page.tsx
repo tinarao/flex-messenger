@@ -1,27 +1,19 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
-import { sendMessage } from '@/server/controllers/messages';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useTransition } from 'react';
+import { User } from 'lucide-react';
+import Link from 'next/link';
 
 export default function Home() {
-  const [_, startTransition] = useTransition();
-  const { data: session } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!session) {
-      router.replace('/auth');
-    } else {
-      router.push('/app');
-    }
-  }, [session]);
-
   return (
-    <div className="h-screen flex items-center justify-center">
-      <Button>Button component</Button>
-    </div>
+    <>
+      <header>
+        <Button asChild>
+          <Link href="/app">
+            <User className="size-4 mr-2" /> Личный кабинет
+          </Link>
+        </Button>
+      </header>
+      <main className="h-screen"></main>
+      <footer className="bg-primary py-32"></footer>
+    </>
   );
 }

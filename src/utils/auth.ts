@@ -34,7 +34,8 @@ export const authOptions: NextAuthOptions = {
                 return {
                     avatar: user.avatar ?? undefined,
                     id: user.id,
-                    username: user.username
+                    username: user.username,
+                    role: user.role
                 }
             },
         })
@@ -53,6 +54,7 @@ export const authOptions: NextAuthOptions = {
                 token.id = parseInt(String(user.id))    // pizdec
                 token.username = user.username
                 token.avatar = user.avatar
+                token.role = user.role
             }
 
             return token
@@ -62,6 +64,7 @@ export const authOptions: NextAuthOptions = {
                 session.user.id = token.id
                 session.user.username = token.username
                 session.user.avatar = token.avatar
+                session.user.role = token.role
             }
 
             return session

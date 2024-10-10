@@ -40,6 +40,17 @@ const ProfileDropdown = () => {
             Мой профиль
           </Link>
         </DropdownMenuItem>
+        {session.user.role === 'Moderator' && (
+          <>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem asChild>
+              <Link className="cursor-pointer" href="/dashboard">
+                Кабинет модератора
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
+        )}
         <DropdownMenuItem asChild>
           <Link className="cursor-pointer" href="/app/logout">
             Выйти
