@@ -3,6 +3,7 @@ import prisma from '@/lib/client';
 import { authOptions } from '@/utils/auth';
 import { getServerSession } from 'next-auth';
 import Link from 'next/link';
+import ChannelCard from './channel-card';
 
 const ChannelsBlock = async () => {
   const session = await getServerSession(authOptions);
@@ -15,7 +16,7 @@ const ChannelsBlock = async () => {
       <h1 className="text-2xl font-bold">Мои каналы</h1>
       <div className="py-2 flex items-center">
         <Button asChild>
-          <Link href="/app/channels/create">Создать канал</Link>
+          <Link href="/app/create-channel">Создать канал</Link>
         </Button>
         <span className="text-sm text-muted-foreground pl-2 ml-2 border-l">
           Всего: {channels.length}
@@ -24,7 +25,7 @@ const ChannelsBlock = async () => {
       {channels.length ? (
         <div className="grid grid-cols-4">
           {channels.map((ch) => (
-            <div key={ch.id}>{ch.name}</div>
+            <ChannelCard key={ch.id} channel={ch} />
           ))}
         </div>
       ) : (

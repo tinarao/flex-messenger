@@ -19,11 +19,14 @@ model User {
   email      String?  @unique
   phone      String?
   avatar     String?
-  password   String   @ignore
+  password   String
   lastOnline DateTime
 
-  channels      Channel[]
-  subscriptions Subscriptions[]
+  role UserRole @default(User)
+
+  channels        Channel[]
+  subscriptions   Subscriptions[]
+  channelRequests ChannelRequest[]
 }
 
 model Subscriptions {
@@ -44,8 +47,24 @@ model Channel {
   subscriptions Subscriptions[]
   posts         Post[]
   tiers         Tier[]
+  status        ChannelStatus   @default(OnModeration)
+  avatar        String?
+  createdAt     DateTime        @default(now())
 
-  avatar String?
+  request ChannelRequest?
+}
+
+// Модель, создаваемая вместе с каналом
+// Реквест будет отображаться в ЛК у модеров
+model ChannelRequest {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  channel   Channel @relation(fields: [channelId], references: [id])
+  channelId Int     @unique
+
+  text String
 }
 
 model Post {
@@ -83,4 +102,15 @@ enum MediaType {
   Photo
   Video
   Audio
+}
+
+enum ChannelStatus {
+  OnModeration
+  Approved
+  Refused
+}
+
+enum UserRole {
+  User
+  Moderator
 }
